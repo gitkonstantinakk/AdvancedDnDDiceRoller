@@ -52,6 +52,7 @@
     <Compile Include="Console\RollCommands\DisAdv.cs" />
     <Compile Include="Console\RollCommands\Roll.cs" />
     <Compile Include="Console\RollCommands\RollHandler.cs" />
+    <Compile Include="Console\StupidClass.cs" />
     <Compile Include="Dices\AnyDice.cs" />
     <Compile Include="Dices\D20.cs" />
     <Compile Include="Dices\DiceExpr.cs" />
