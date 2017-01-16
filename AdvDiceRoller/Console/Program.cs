@@ -10,9 +10,10 @@ namespace AdvDiceRoller.Console
 	{
 		static void Main()
 		{
-			string input = @"roll d20 + d20";
-			CommandManager cmdMng = new CommandManager(input);
-			cmdMng.Handle();
+            //string input = @"roll d20 + d20";
+            //CommandManager cmdMng = new CommandManager(input);
+            //cmdMng.Handle();
+            UI.StartReadingCommands();
 		}
 	}
 }
