@@ -7,7 +7,7 @@ using AdvDiceRoller.Common;
 
 namespace AdvDiceRoller.Dices
 {
-	public abstract class DiceExpr : IDice, IAdv
+	public abstract class Dice : IDice, IAdv
 	{
 		private static readonly int[] diceTypes = { 2, 3, 4, 6, 8, 10, 12, 20, 100, 120 };
 
@@ -50,7 +50,7 @@ namespace AdvDiceRoller.Dices
 			get { return this.expression; }
 		}
 
-		public DiceExpr (int rolls, int sides, bool isRollCount)
+		public Dice (int rolls, int sides, bool isRollCount)
 		{
 			this.Rolls = rolls;
 			this.Sides = sides;
@@ -81,15 +81,15 @@ namespace AdvDiceRoller.Dices
 
 		public int RollAdv()
 		{
-			int result1 = DiceExpr.rnd.Next(1, 21);
-			int result2 = DiceExpr.rnd.Next(1, 21);
+			int result1 = Dice.rnd.Next(1, 21);
+			int result2 = Dice.rnd.Next(1, 21);
 			return result1 > result2 ? result1 : result2;
 		}
 
 		public int RollDisadv()
 		{
-			int result1 = DiceExpr.rnd.Next(1, 21);
-			int result2 = DiceExpr.rnd.Next(1, 21);
+			int result1 = Dice.rnd.Next(1, 21);
+			int result2 = Dice.rnd.Next(1, 21);
 			return result1 < result2 ? result1 : result2;
 		}
 

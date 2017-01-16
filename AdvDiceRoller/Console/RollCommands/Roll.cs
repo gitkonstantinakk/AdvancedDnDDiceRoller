@@ -11,7 +11,15 @@ namespace AdvDiceRoller.Console.RollCommands
 {
 	public static class Roll
 	{
-		public static void ProcessRoll (List<string> rolls, bool adv, int advCount, bool disAdv, int disAdvCount, bool advDisAdv, int advDisAdvCount, List<string> advDisAdvExpr, List<string> dc)
+
+		public static void ProcessRoll (List<string> rolls, 
+			bool adv, int advCount, 
+			bool disAdv, int disAdvCount, 
+			bool advDisAdv, int advDisAdvCount, List<string> advDisAdvExpr,
+			bool isDc, int dcValue
+			)
+
+		public static void ProcessRoll (List<string> rolls, bool adv, int advCount, bool disAdv, int disAdvCount, bool advDisAdv, int advDisAdvCount, List<string> advDisAdvE)
 		{
 			// check if there is more than one "roll" expression (shouldn't be!!)
 			if (rolls.Count() > 1)
@@ -54,36 +62,39 @@ namespace AdvDiceRoller.Console.RollCommands
 			int advDisAdvIndex = 0;
 			foreach (var dice in DiceExprs)
 			{
-				if (dice.GetType().Name.ToString().ToLower().Equals("d20") && advDisAdv && advDisAdvCount > 0)
+				if (dice.GetType().Name.ToString().ToLower().Equals("d20") && dice.Sides == 1)
 				{
-					if (advDisAdvIndex < advDisAdvCount)
+					if (advDisAdv && advDisAdvCount > 0)
 					{
-						if (advDisAdvExpr[advDisAdvIndex].Equals("adv"))
+						if (advDisAdvIndex < advDisAdvCount)
 						{
-							rollResults.Add(dice.RollAdv());
-							System.Console.WriteLine("Rolled with adv!");
+							if (advDisAdvExpr[advDisAdvIndex].Equals("adv"))
+							{
+								rollResults.Add(dice.RollAdv());
+								System.Console.WriteLine("Rolled with adv!");
+							}
+							else
+							{
+								rollResults.Add(dice.RollDisadv());
+								System.Console.WriteLine("Rolled with disadv!");
+							}
+							advDisAdvIndex += 1;
 						}
-						else
-						{
-							rollResults.Add(dice.RollDisadv());
-							System.Console.WriteLine("Rolled with disadv!");
-						}
-						advDisAdvIndex += 1;
+					}
+					else if (adv && advCount > 0)
+					{
+						rollResults.Add(dice.RollAdv());
+						System.Console.WriteLine("Rolled with adv!");
+						advCount -= 1;
+					}
+					else if (disAdv && disAdvCount > 0)
+					{
+						rollResults.Add(dice.RollDisadv());
+						System.Console.WriteLine("Rolled with disadv!");
+						disAdvCount -= 1;
 					}
 				}
-				else if (dice.GetType().Name.ToString().ToLower().Equals("d20") && adv && advCount > 0)
-				{
-					rollResults.Add(dice.RollAdv());
-					System.Console.WriteLine("Rolled with adv!");
-					advCount -= 1;
-				}
-				else if (dice.GetType().Name.ToString().ToLower().Equals("d20") && disAdv && disAdvCount > 0)
-				{
-					rollResults.Add(dice.RollDisadv());
-					System.Console.WriteLine("Rolled with disadv!");
-					disAdvCount -= 1;
-				}
-				else if (dice.GetType().Name.ToString().ToLower().Equals("anydice") || dice.GetType().Name.ToString().ToLower().Equals("d20"))
+				else
 				{
 					rollResults.Add(dice.Roll());
 				}
@@ -111,36 +122,26 @@ namespace AdvDiceRoller.Console.RollCommands
 					break;
 				}
 			}
+
+
+			// evaluate whole expression
+			Eval evaluation = new Common.Eval();
+			System.Console.WriteLine(Math.Round(evaluation.Execute(roll), 0).ToString());
+
+
+		}
+
 			System.Console.WriteLine(roll);
-            // Plamen
-            // Parse final string to integers and calculate them
-            int rollResultAfterOperation;
-            if (roll.Contains('+'))
-            {
-                int[] rollSplitted = roll.Split('+').Select(x => int.Parse(x)).ToArray();
-                rollResultAfterOperation = rollSplitted[0] + rollSplitted[1];
-            }
-            else
-            {
-                rollResultAfterOperation = int.Parse(roll);
-            }
-            int num = int.Parse(dc[0].Substring(2));
-            if (rollResultAfterOperation > num)
-            {
-                System.Console.WriteLine("SUCCESS Roll: {0} > DC: {1}", rollResultAfterOperation, num);
-            }
-            else
-            {
-                System.Console.WriteLine("FAIL Roll: {0} < DC: {1}", rollResultAfterOperation, num);
-            }
         }
+
 		
-		private static List<DiceExpr> diceExprs = new List<DiceExpr>();
-		public static List<DiceExpr> DiceExprs
+		private static List<Dice> diceExprs = new List<Dice>();
+		public static List<Dice> DiceExprs
 		{
 			get { return diceExprs; }
 			set { diceExprs = value; }
-		}
+		}	
+
 
 		// supporting methods
 		// Find searches for single dice expression (###d###) in string. If found - stores it in diceExprs list and returns index of expression's last char. If not - returns -1;

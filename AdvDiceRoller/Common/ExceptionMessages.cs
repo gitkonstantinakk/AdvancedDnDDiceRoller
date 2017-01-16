@@ -15,7 +15,9 @@ namespace AdvDiceRoller.Common
 		public const string InvalidNumberOfRolls = "Maximum possible number of rolls with single dice is 150.";
 		public const string InvalidSubcommand = "Cant read your subcommand: {0}.";
 		public const string TooManyAdvs = "You can perform only one \"adv\" command in one subcommand, but more than one in entire expression. Try use comma (\",\").";
+		public const string TooManyDCs = "You can perform only one \"dc\" command in entire expression.";
 		public const string TooManyDisAdvs = "You can perform only one \"disadv\" command in one subcommand, but more than one in entire expression. Try use comma (\",\").";
 		public const string TooManyRolls = "You can perform only one \"roll\" command in entire expression.";
+
 	}
 }

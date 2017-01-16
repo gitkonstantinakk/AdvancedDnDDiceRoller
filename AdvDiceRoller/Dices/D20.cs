@@ -7,7 +7,7 @@ using AdvDiceRoller.Common;
 
 namespace AdvDiceRoller.Dices
 {
-	public class D20 : DiceExpr, IDice, IAdv
+	public class D20 : Dice, IDice, IAdv
 	{
 		public D20(int rolls, int sides, bool isRollCount) : base(rolls, sides, isRollCount) { }
 	}

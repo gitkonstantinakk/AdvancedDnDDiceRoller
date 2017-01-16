@@ -12,16 +12,15 @@ namespace AdvDiceRoller.Console.RollCommands
 	{
 		public static bool ProcessAdv(List<string> adv, out int advCount)
 		{
-			adv.ForEach(cmd => cmd.ClearAdv());
 			adv.ForEach(cmd =>
 			{
+				cmd.ClearAdv();
+
 				if (new Regex("adv").Matches(cmd).Count > 1)
 				{
 					throw new InvalidRollOperationException(ExceptionMessages.TooManyAdvs);
 				}
-			});
-			adv.ForEach(cmd =>
-			{
+
 				if(!cmd.Equals("adv"))
 				{
 					throw new InvalidRollOperationException(String.Format(ExceptionMessages.InvalidSubcommand, cmd.ToString()));
@@ -29,6 +28,7 @@ namespace AdvDiceRoller.Console.RollCommands
 			});
 
 			advCount = adv.Count;
+
 			if (adv.Count > 0)
 			{
 				
