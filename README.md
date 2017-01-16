@@ -3,6 +3,7 @@
 Simulator for Dungeons and Dragons dice rolls
 
 1. Team "Guava" members:
+
   -Konstanty Chodkowski - - konstantych
   
   -Konstantin Konstantinov - kkonstantinov
