@@ -17,19 +17,19 @@ namespace AdvDiceRoller.Console.RollCommands
 			{
 				if (new Regex("disadv").Matches(cmd).Count > 1)
 				{
-					throw new ArgumentException(ExceptionMessages.TooManyDisAdvs);
+					throw new InvalidRollOperationException(ExceptionMessages.TooManyDisAdvs);
 				}
 
 				if (new Regex("adv").Matches(cmd).Count > 1)
 				{
-					throw new ArgumentException(ExceptionMessages.TooManyDisAdvs);
+					throw new InvalidRollOperationException(ExceptionMessages.TooManyDisAdvs);
 				}
 			});
 			advDisAdv.ForEach(cmd =>
 			{
 				if (!cmd.Equals("adv") && !cmd.Equals("disadv"))
 				{
-					throw new ArgumentException(String.Format(ExceptionMessages.InvalidSubcommand, cmd.ToString()));
+					throw new InvalidRollOperationException(String.Format(ExceptionMessages.InvalidSubcommand, cmd.ToString()));
 				}
 			});
 
