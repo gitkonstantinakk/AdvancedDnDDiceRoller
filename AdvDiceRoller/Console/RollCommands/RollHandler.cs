@@ -57,9 +57,9 @@ namespace AdvDiceRoller.Console.RollCommands
 			}
 
 			var dc =
-				from command in commands
+				(from command in commands
 				where command.Contains("dc")
-				select command;
+				select command).ToList();
 
 			var noCrit =
 				from command in commands
@@ -83,7 +83,7 @@ namespace AdvDiceRoller.Console.RollCommands
 				select command;
 
 			List<string> rollExpr = new List<string>(roll);
-			Roll.ProcessRoll(rollExpr, isAdv, advCount, isDisAdv, disAdvCount, isAdvDisAdv, advDisAdvCount, advDisAdvExpr);
+			Roll.ProcessRoll(rollExpr, isAdv, advCount, isDisAdv, disAdvCount, isAdvDisAdv, advDisAdvCount, advDisAdvExpr, dc);
 		}
 	}
 }
