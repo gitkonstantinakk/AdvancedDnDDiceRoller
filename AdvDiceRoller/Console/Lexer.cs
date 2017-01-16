@@ -39,10 +39,22 @@ namespace AdvDiceRoller.Console
 			return roll;
 		}
 
-		public static string ClearDisAdv(this string roll)
+		public static string ClearDisAdv(this string expr)
 		{
-			roll = Regex.Replace(roll, "[^isadv]", "", RegexOptions.Compiled);
-			return roll;
+			expr = Regex.Replace(expr, "[^isadv]", "", RegexOptions.Compiled);
+			return expr;
+		}
+
+		public static string ClearDC(this string expr)
+		{
+			expr = Regex.Replace(expr, "[^0-9dc]", "", RegexOptions.Compiled);
+			return expr;
+		}
+
+		public static string ExtractDCValue(this string expr)
+		{
+			expr = Regex.Replace(expr, "[^0-9]", "", RegexOptions.Compiled);
+			return expr;
 		}
 
 		public static bool CheckBrackets(this string str)

@@ -8,30 +8,34 @@ using AdvDiceRoller.Common;
 
 namespace AdvDiceRoller.Console.RollCommands
 {
-	public static class Adv
+	class ResultProcessor
 	{
-		public static bool ProcessAdv(List<string> adv, out int advCount)
+		public static bool ProcessDc(List<string> dcExpr, out int dc)
 		{
-			adv.ForEach(cmd =>
+			dcExpr.ForEach(cmd =>
 			{
-				cmd.ClearAdv();
+				cmd = cmd.ClearAdv();
 
-				if (new Regex("adv").Matches(cmd).Count > 1)
+				if (dcExpr.Count() > 1)
 				{
-					throw new ArgumentException(ExceptionMessages.TooManyAdvs);
+					throw new ArgumentException(ExceptionMessages.TooManyDCs);
 				}
 
-				if(!cmd.Equals("adv"))
+				if (new Regex("dc").Matches(cmd).Count > 1)
+				{
+					throw new ArgumentException(ExceptionMessages.TooManyDCs);
+				}
+
+				if (!cmd.Equals("dc"))
 				{
 					throw new ArgumentException(String.Format(ExceptionMessages.InvalidSubcommand, cmd.ToString()));
 				}
 			});
 
-			advCount = adv.Count;
+			dc = int.Parse(dcExpr[0].ExtractDCValue());
 
-			if (adv.Count > 0)
+			if (dc > 0)
 			{
-				
 				return true;
 			}
 			else

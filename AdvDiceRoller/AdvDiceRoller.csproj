@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Eval.cs" />
     <Compile Include="Common\ExceptionMessages.cs" />
+    <Compile Include="Common\TextParser.cs" />
     <Compile Include="Console\CommandManager.cs" />
     <Compile Include="Console\Lexer.cs" />
     <Compile Include="Console\Program.cs" />
@@ -52,6 +54,7 @@
     <Compile Include="Console\RollCommands\DisAdv.cs" />
     <Compile Include="Console\RollCommands\Roll.cs" />
     <Compile Include="Console\RollCommands\RollHandler.cs" />
+    <Compile Include="Console\RollCommands\ResultProcessor.cs" />
     <Compile Include="Console\UI.cs" />
     <Compile Include="Dices\AnyDice.cs" />
     <Compile Include="Dices\D20.cs" />

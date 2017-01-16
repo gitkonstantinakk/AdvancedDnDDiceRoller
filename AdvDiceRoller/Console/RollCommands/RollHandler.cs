@@ -12,12 +12,12 @@ namespace AdvDiceRoller.Console.RollCommands
 		{
 			
 			// catch advantage
-			var adv =
+			var advCatch =
 				from command in commands
 				where command.Contains("adv") && !command.Contains("disadv")
 				select command;
 
-			List<string> advExpr = new List<string>(adv);
+			List<string> advExpr = new List<string>(advCatch);
 			int advCount = 0;
 			bool isAdv = false;
 			if (advExpr.Count > 0)
@@ -26,12 +26,12 @@ namespace AdvDiceRoller.Console.RollCommands
 			}
 
 			// catch disadvantage
-			var disadv =
+			var disadvCatch =
 				from command in commands
 				where command.Contains("disadv")
 				select command;
 
-			List<string> disAdvExpr = new List<string>(disadv);
+			List<string> disAdvExpr = new List<string>(disadvCatch);
 			int disAdvCount = 0;
 			bool isDisAdv = false;
 			if (disAdvExpr.Count > 0)
@@ -45,21 +45,29 @@ namespace AdvDiceRoller.Console.RollCommands
 			bool isAdvDisAdv = false;
 			if (advExpr.Count > 0 && disAdvCount > 0)
 			{
-				var advDisAdv =
+				var advDisAdvCatch =
 					from command in commands
 					where (command.Contains("adv") && !command.Contains("disadv")) || command.Contains("disadv")
 					select command;
-				advDisAdvExpr = new List<string>(advDisAdv);
+				advDisAdvExpr = new List<string>(advDisAdvCatch);
 				if (advDisAdvExpr.Count > 0)
 				{
 					isAdvDisAdv = AdvDisAdv.ProcessAdvDisAdv(advDisAdvExpr, out advDisAdvCount);
 				}
 			}
 
-			var dc =
+			// catch dc
+			var dcCatch =
 				from command in commands
 				where command.Contains("dc")
 				select command;
+			List<string> dcExpr = new List<string>(dcCatch);
+			int dcValue = 0;
+			bool isDc = false;
+			if (dcExpr.Count > 0)
+			{
+				isDc = ResultProcessor.ProcessDc(dcExpr, out dcValue);
+			}
 
 			var noCrit =
 				from command in commands
@@ -83,7 +91,7 @@ namespace AdvDiceRoller.Console.RollCommands
 				select command;
 
 			List<string> rollExpr = new List<string>(roll);
-			Roll.ProcessRoll(rollExpr, isAdv, advCount, isDisAdv, disAdvCount, isAdvDisAdv, advDisAdvCount, advDisAdvExpr);
+			Roll.ProcessRoll(rollExpr, isAdv, advCount, isDisAdv, disAdvCount, isAdvDisAdv, advDisAdvCount, advDisAdvExpr, isDc, dcValue);
 		}
 	}
 }
