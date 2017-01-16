@@ -16,7 +16,7 @@ namespace AdvDiceRoller.Console.RollCommands
 			// check if there is more than one "roll" expression (shouldn't be!!)
 			if (rolls.Count() > 1)
 			{
-				throw new ArgumentException(ExceptionMessages.TooManyRolls);
+				throw new InvalidRollOperationException(ExceptionMessages.TooManyRolls);
 			}
 
 			// now we can be sure that te only expression in rolls list is the one with "roll" expression
@@ -25,7 +25,7 @@ namespace AdvDiceRoller.Console.RollCommands
 			// check if there is more than one  "roll" in expression (shouldn't be!!)
 			if (new Regex("roll").Matches(roll).Count > 1)
 			{
-					throw new ArgumentException(ExceptionMessages.TooManyRolls);
+					throw new InvalidRollOperationException(ExceptionMessages.TooManyRolls);
 			}
 
 			// eliminate characters invalid for roll expression
@@ -34,7 +34,7 @@ namespace AdvDiceRoller.Console.RollCommands
 			// check on brackets
 			if (!roll.CheckBrackets())
 			{
-				throw new ArgumentException(ExceptionMessages.IncorrectBrackets);
+				throw new InvalidRollOperationException(ExceptionMessages.IncorrectBrackets);
 			}
 
 			// find all dice expressions (###d###) and store them in diceExprs list
