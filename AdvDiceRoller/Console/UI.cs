@@ -23,7 +23,12 @@ namespace AdvDiceRoller.Console
             {
                 System.Console.Write("Enter command for dice roll, or quit to exit:");
                 string input = System.Console.ReadLine();
-                CommandManager cmdMng = new CommandManager(input);
+
+                if(input == "quit")
+                {
+                    QuitDiceRoller();
+                }
+                CommandManager cmdMng = new CommandManager("roll " + input);
                 cmdMng.Handle();
             }
         }
