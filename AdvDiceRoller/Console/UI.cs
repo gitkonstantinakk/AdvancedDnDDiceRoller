@@ -4,26 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace AdvDiceRoller.Console
 {
     public static class UI
     {
-        enum GAMESTATE
-        {
-            gameOn,
-            gameOff
-        };
 
-
-        public static string state = Convert.ToString(GAMESTATE.gameOn);
+        public static string state = Convert.ToString(GameState.gameOn);
 
         public static void StartReadingCommands()
         {
             while (state == "gameOn")
             {
-                System.Console.Write("Enter command for dice roll, or quit to exit:");
+                System.Console.Write("Enter command for dice roll, or quit to exit: ");
                 string input = System.Console.ReadLine();
-                CommandManager cmdMng = new CommandManager(input);
+
+                if(input == "quit")
+                {                  
+                    QuitDiceRoller();
+                }
+                CommandManager cmdMng = new CommandManager("roll " + input);
                 cmdMng.Handle();
             }
         }

@@ -56,6 +56,7 @@ namespace AdvDiceRoller.Console.RollCommands
 				}
 			}
 
+
 			// catch dc
 			var dcCatch =
 				from command in commands
@@ -68,6 +69,12 @@ namespace AdvDiceRoller.Console.RollCommands
 			{
 				isDc = ResultProcessor.ProcessDc(dcExpr, out dcValue);
 			}
+
+			var dc =
+				from command in commands
+				where command.Contains("dc")
+				select command;
+
 
 			var noCrit =
 				from command in commands
@@ -91,7 +98,11 @@ namespace AdvDiceRoller.Console.RollCommands
 				select command;
 
 			List<string> rollExpr = new List<string>(roll);
+
 			Roll.ProcessRoll(rollExpr, isAdv, advCount, isDisAdv, disAdvCount, isAdvDisAdv, advDisAdvCount, advDisAdvExpr, isDc, dcValue);
+
+			Roll.ProcessRoll(rollExpr, isAdv, advCount, isDisAdv, disAdvCount, isAdvDisAdv, advDisAdvCount, advDisAdvExpr);
+
 		}
 	}
 }

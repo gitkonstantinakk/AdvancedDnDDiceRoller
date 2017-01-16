@@ -45,8 +45,13 @@
   <ItemGroup>
     <Compile Include="Common\Eval.cs" />
     <Compile Include="Common\ExceptionMessages.cs" />
+
     <Compile Include="Common\TextParser.cs" />
+
+    <Compile Include="Common\InvalidRollOperationException.cs" />
+
     <Compile Include="Console\CommandManager.cs" />
+    <Compile Include="Console\GameState.cs" />
     <Compile Include="Console\Lexer.cs" />
     <Compile Include="Console\Program.cs" />
     <Compile Include="Console\RollCommands\Adv.cs" />

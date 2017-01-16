@@ -11,6 +11,7 @@ namespace AdvDiceRoller.Console.RollCommands
 {
 	public static class Roll
 	{
+
 		public static void ProcessRoll (List<string> rolls, 
 			bool adv, int advCount, 
 			bool disAdv, int disAdvCount, 
@@ -18,11 +19,12 @@ namespace AdvDiceRoller.Console.RollCommands
 			bool isDc, int dcValue
 			)
 
+		public static void ProcessRoll (List<string> rolls, bool adv, int advCount, bool disAdv, int disAdvCount, bool advDisAdv, int advDisAdvCount, List<string> advDisAdvE)
 		{
 			// check if there is more than one "roll" expression (shouldn't be!!)
 			if (rolls.Count() > 1)
 			{
-				throw new ArgumentException(ExceptionMessages.TooManyRolls);
+				throw new InvalidRollOperationException(ExceptionMessages.TooManyRolls);
 			}
 
 			// now we can be sure that te only expression in rolls list is the one with "roll" expression
@@ -31,7 +33,7 @@ namespace AdvDiceRoller.Console.RollCommands
 			// check if there is more than one  "roll" in expression (shouldn't be!!)
 			if (new Regex("roll").Matches(roll).Count > 1)
 			{
-					throw new ArgumentException(ExceptionMessages.TooManyRolls);
+					throw new InvalidRollOperationException(ExceptionMessages.TooManyRolls);
 			}
 
 			// eliminate characters invalid for roll expression
@@ -40,7 +42,7 @@ namespace AdvDiceRoller.Console.RollCommands
 			// check on brackets
 			if (!roll.CheckBrackets())
 			{
-				throw new ArgumentException(ExceptionMessages.IncorrectBrackets);
+				throw new InvalidRollOperationException(ExceptionMessages.IncorrectBrackets);
 			}
 
 			// find all dice expressions (###d###) and store them in diceExprs list
@@ -121,12 +123,17 @@ namespace AdvDiceRoller.Console.RollCommands
 				}
 			}
 
+
 			// evaluate whole expression
 			Eval evaluation = new Common.Eval();
 			System.Console.WriteLine(Math.Round(evaluation.Execute(roll), 0).ToString());
 
 
 		}
+
+			System.Console.WriteLine(roll);
+        }
+
 		
 		private static List<Dice> diceExprs = new List<Dice>();
 		public static List<Dice> DiceExprs

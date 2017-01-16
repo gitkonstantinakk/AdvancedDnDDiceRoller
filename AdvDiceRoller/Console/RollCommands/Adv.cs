@@ -18,12 +18,12 @@ namespace AdvDiceRoller.Console.RollCommands
 
 				if (new Regex("adv").Matches(cmd).Count > 1)
 				{
-					throw new ArgumentException(ExceptionMessages.TooManyAdvs);
+					throw new InvalidRollOperationException(ExceptionMessages.TooManyAdvs);
 				}
 
 				if(!cmd.Equals("adv"))
 				{
-					throw new ArgumentException(String.Format(ExceptionMessages.InvalidSubcommand, cmd.ToString()));
+					throw new InvalidRollOperationException(String.Format(ExceptionMessages.InvalidSubcommand, cmd.ToString()));
 				}
 			});
 
