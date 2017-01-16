@@ -11,7 +11,7 @@ namespace AdvDiceRoller.Console.RollCommands
 {
 	public static class Roll
 	{
-		public static void ProcessRoll (List<string> rolls, bool adv, int advCount, bool disAdv, int disAdvCount, bool advDisAdv, int advDisAdvCount, List<string> advDisAdvExpr)
+		public static void ProcessRoll (List<string> rolls, bool adv, int advCount, bool disAdv, int disAdvCount, bool advDisAdv, int advDisAdvCount, List<string> advDisAdvExpr, List<string> dc)
 		{
 			// check if there is more than one "roll" expression (shouldn't be!!)
 			if (rolls.Count() > 1)
@@ -112,7 +112,28 @@ namespace AdvDiceRoller.Console.RollCommands
 				}
 			}
 			System.Console.WriteLine(roll);
-		}
+            // Plamen
+            // Parse final string to integers and calculate them
+            int rollResultAfterOperation;
+            if (roll.Contains('+'))
+            {
+                int[] rollSplitted = roll.Split('+').Select(x => int.Parse(x)).ToArray();
+                rollResultAfterOperation = rollSplitted[0] + rollSplitted[1];
+            }
+            else
+            {
+                rollResultAfterOperation = int.Parse(roll);
+            }
+            int num = int.Parse(dc[0].Substring(2));
+            if (rollResultAfterOperation > num)
+            {
+                System.Console.WriteLine("SUCCESS Roll: {0} > DC: {1}", rollResultAfterOperation, num);
+            }
+            else
+            {
+                System.Console.WriteLine("FAIL Roll: {0} < DC: {1}", rollResultAfterOperation, num);
+            }
+        }
 		
 		private static List<DiceExpr> diceExprs = new List<DiceExpr>();
 		public static List<DiceExpr> DiceExprs
