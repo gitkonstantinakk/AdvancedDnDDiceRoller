@@ -101,8 +101,6 @@ namespace AdvDiceRoller.Console.RollCommands
 
 			Roll.ProcessRoll(rollExpr, isAdv, advCount, isDisAdv, disAdvCount, isAdvDisAdv, advDisAdvCount, advDisAdvExpr, isDc, dcValue);
 
-			Roll.ProcessRoll(rollExpr, isAdv, advCount, isDisAdv, disAdvCount, isAdvDisAdv, advDisAdvCount, advDisAdvExpr);
-
 		}
 	}
 }

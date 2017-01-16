@@ -9,131 +9,131 @@ using AdvDiceRoller.Dices;
 
 namespace AdvDiceRoller.Console.RollCommands
 {
-	public static class Roll
-	{
+    public static class Roll
+    {
 
-		public static void ProcessRoll (List<string> rolls, 
-			bool adv, int advCount, 
-			bool disAdv, int disAdvCount, 
-			bool advDisAdv, int advDisAdvCount, List<string> advDisAdvExpr,
-			bool isDc, int dcValue
-			)
+        public static void ProcessRoll(List<string> rolls,
+            bool adv, int advCount,
+            bool disAdv, int disAdvCount,
+            bool advDisAdv, int advDisAdvCount, List<string> advDisAdvExpr,
+            bool isDc, int dcValue
+            )
 
-		public static void ProcessRoll (List<string> rolls, bool adv, int advCount, bool disAdv, int disAdvCount, bool advDisAdv, int advDisAdvCount, List<string> advDisAdvE)
-		{
-			// check if there is more than one "roll" expression (shouldn't be!!)
-			if (rolls.Count() > 1)
-			{
-				throw new InvalidRollOperationException(ExceptionMessages.TooManyRolls);
-			}
+        { 
+       
+            // check if there is more than one "roll" expression (shouldn't be!!)
+            if (rolls.Count() > 1)
+            {
+                throw new InvalidRollOperationException(ExceptionMessages.TooManyRolls);
+            }
 
-			// now we can be sure that te only expression in rolls list is the one with "roll" expression
-			string roll = rolls[0];
+            // now we can be sure that te only expression in rolls list is the one with "roll" expression
+            string roll = rolls[0];
 
-			// check if there is more than one  "roll" in expression (shouldn't be!!)
-			if (new Regex("roll").Matches(roll).Count > 1)
-			{
-					throw new InvalidRollOperationException(ExceptionMessages.TooManyRolls);
-			}
+            // check if there is more than one  "roll" in expression (shouldn't be!!)
+            if (new Regex("roll").Matches(roll).Count > 1)
+            {
+                throw new InvalidRollOperationException(ExceptionMessages.TooManyRolls);
+            }
 
-			// eliminate characters invalid for roll expression
-			roll = roll.ClearRoll();
+            // eliminate characters invalid for roll expression
+            roll = roll.ClearRoll();
 
-			// check on brackets
-			if (!roll.CheckBrackets())
-			{
-				throw new InvalidRollOperationException(ExceptionMessages.IncorrectBrackets);
-			}
+            // check on brackets
+            if (!roll.CheckBrackets())
+            {
+                throw new InvalidRollOperationException(ExceptionMessages.IncorrectBrackets);
+            }
 
-			// find all dice expressions (###d###) and store them in diceExprs list
-			for (int i = 0; i < roll.Length; i++)
-			{
-				int newPos = Find(roll, i);
-				if (newPos < 0)
-				{
-					break;
-				}
-				i = newPos;
-			}
+            // find all dice expressions (###d###) and store them in diceExprs list
+            for (int i = 0; i < roll.Length; i++)
+            {
+                int newPos = Find(roll, i);
+                if (newPos < 0)
+                {
+                    break;
+                }
+                i = newPos;
+            }
 
-			// POLYMORPHISM BELOW!!!
-			// generate roll results for all dice expressions found in expression
-			List<int> rollResults = new List<int>();
-			int advDisAdvIndex = 0;
-			foreach (var dice in DiceExprs)
-			{
-				if (dice.GetType().Name.ToString().ToLower().Equals("d20") && dice.Sides == 1)
-				{
-					if (advDisAdv && advDisAdvCount > 0)
-					{
-						if (advDisAdvIndex < advDisAdvCount)
-						{
-							if (advDisAdvExpr[advDisAdvIndex].Equals("adv"))
-							{
-								rollResults.Add(dice.RollAdv());
-								System.Console.WriteLine("Rolled with adv!");
-							}
-							else
-							{
-								rollResults.Add(dice.RollDisadv());
-								System.Console.WriteLine("Rolled with disadv!");
-							}
-							advDisAdvIndex += 1;
-						}
-					}
-					else if (adv && advCount > 0)
-					{
-						rollResults.Add(dice.RollAdv());
-						System.Console.WriteLine("Rolled with adv!");
-						advCount -= 1;
-					}
-					else if (disAdv && disAdvCount > 0)
-					{
-						rollResults.Add(dice.RollDisadv());
-						System.Console.WriteLine("Rolled with disadv!");
-						disAdvCount -= 1;
-					}
-				}
-				else
-				{
-					rollResults.Add(dice.Roll());
-				}
-			}
+            // POLYMORPHISM BELOW!!!
+            // generate roll results for all dice expressions found in expression
+            List<int> rollResults = new List<int>();
+            int advDisAdvIndex = 0;
+            foreach (var dice in DiceExprs)
+            {
+                if (dice.GetType().Name.ToString().ToLower().Equals("d20") && dice.Sides == 1)
+                {
+                    if (advDisAdv && advDisAdvCount > 0)
+                    {
+                        if (advDisAdvIndex < advDisAdvCount)
+                        {
+                            if (advDisAdvExpr[advDisAdvIndex].Equals("adv"))
+                            {
+                                rollResults.Add(dice.RollAdv());
+                                System.Console.WriteLine("Rolled with adv!");
+                            }
+                            else
+                            {
+                                rollResults.Add(dice.RollDisadv());
+                                System.Console.WriteLine("Rolled with disadv!");
+                            }
+                            advDisAdvIndex += 1;
+                        }
+                    }
+                    else if (adv && advCount > 0)
+                    {
+                        rollResults.Add(dice.RollAdv());
+                        System.Console.WriteLine("Rolled with adv!");
+                        advCount -= 1;
+                    }
+                    else if (disAdv && disAdvCount > 0)
+                    {
+                        rollResults.Add(dice.RollDisadv());
+                        System.Console.WriteLine("Rolled with disadv!");
+                        disAdvCount -= 1;
+                    }
+                }
+                else
+                {
+                    rollResults.Add(dice.Roll());
+                }
+            }
 
-			// replace dice expressions with results
-			for (int i = 0, j = 0; i < roll.Length; i++, j++)
-			{
-				if (j < DiceExprs.Count && j >= 0)
-				{
-					int cutStart = roll.IndexOf(DiceExprs[j].Expression);
-					int cutLength = DiceExprs[j].Expression.Length;
-					i = cutStart;
-					string diceExpr = roll.Substring(cutStart, cutLength);
-					string rollResult = rollResults[j].ToString();
-					StringBuilder finalExpr = new StringBuilder();
-					finalExpr = finalExpr
-						.Append(roll.Substring(0, cutStart))
-						.Append(rollResult)
-						.Append(roll.Substring(cutStart + cutLength, roll.Length - (cutStart + cutLength)));
-					roll = finalExpr.ToString();
-				}
-				else
-				{
-					break;
-				}
-			}
-
-
-			// evaluate whole expression
-			Eval evaluation = new Common.Eval();
-			System.Console.WriteLine(Math.Round(evaluation.Execute(roll), 0).ToString());
+            // replace dice expressions with results
+            for (int i = 0, j = 0; i < roll.Length; i++, j++)
+            {
+                if (j < DiceExprs.Count && j >= 0)
+                {
+                    int cutStart = roll.IndexOf(DiceExprs[j].Expression);
+                    int cutLength = DiceExprs[j].Expression.Length;
+                    i = cutStart;
+                    string diceExpr = roll.Substring(cutStart, cutLength);
+                    string rollResult = rollResults[j].ToString();
+                    StringBuilder finalExpr = new StringBuilder();
+                    finalExpr = finalExpr
+                        .Append(roll.Substring(0, cutStart))
+                        .Append(rollResult)
+                        .Append(roll.Substring(cutStart + cutLength, roll.Length - (cutStart + cutLength)));
+                    roll = finalExpr.ToString();
+                }
+                else
+                {
+                    break;
+                }
+            }
 
 
-		}
+            // evaluate whole expression
+            Eval evaluation = new Common.Eval();
+            System.Console.WriteLine(Math.Round(evaluation.Execute(roll), 0).ToString());
 
-			System.Console.WriteLine(roll);
+
+
+
+            System.Console.WriteLine(roll);
         }
-
+    
 		
 		private static List<Dice> diceExprs = new List<Dice>();
 		public static List<Dice> DiceExprs
