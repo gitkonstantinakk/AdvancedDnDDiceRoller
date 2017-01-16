@@ -1,2 +1,2 @@
-# AdvancedDnDDiceRoller
-Simulator for DnD dice rolls
+# AdvancedDnDRoller
+Simulator for Dungeons and Dragons dice rolls
