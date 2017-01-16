@@ -15,5 +15,10 @@ namespace AdvDiceRoller.Console
             //cmdMng.Handle();
             UI.StartReadingCommands();
 		}
+		
+		static int DoSth(int a, int b)
+		{
+			return a + b;
+		}
 	}
 }
